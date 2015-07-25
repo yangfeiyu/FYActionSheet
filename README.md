@@ -1,2 +1,2 @@
 # FYActionSheet
-ActionSheet from  top&amp;bottom directions
+Show ActionSheet from  downward or upward 
