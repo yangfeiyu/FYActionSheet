@@ -10,7 +10,7 @@
 
 #import "FYActionSheet.h"
 
-@interface FYActionSheet ()
+@interface FYActionSheet () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) UIView *targetView;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, assign) NSInteger edgeInset;
@@ -40,6 +40,19 @@
 
 - (void)setup {
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOutSide)];
+    tap.delegate = self;
+    [self addGestureRecognizer:tap];
+    
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isKindOfClass:[self class]]) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - public methods
@@ -152,7 +165,10 @@
             break;
     }
     [self addConstraints:@[self.marginEdgeConstraint, self.heightConstraint, self.widthConstraint, self.centerXConstraint]];
-    
+}
+
+- (void)didTapOutSide {
+    [self dismissActionSheetAnimated:YES];
 }
 
 @end
